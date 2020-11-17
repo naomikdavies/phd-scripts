@@ -1,0 +1,23 @@
+install.packages("vegan")
+install.packages("microbiomics")
+library("vegan")
+library("microbiomics")
+
+#set wd and read files into R
+setwd("C:/Users/Naomi Davies/Documents/PhD R/Gut micro Aug2018")
+bugslist_filtered <- read_metaphlan_table(file = 'bugslist filtered.csv', kingdom = "k__Bacteria", lvl = 7, normalize = TRUE)
+metadata_filtered <- read.table(file = 'metadata_filtered.txt', header = TRUE, sep = '\t')
+
+#check row names match
+all(rownames(bugslist_filtered) == metadata_filtered$sampleID)
+
+##diversity
+diversity(bugslist_filtered)
+diversity <- diversity(bugslist_filtered)
+diversityshannon <- diversity(bugslist_filtered, index = "shannon")
+write.csv(diversityshannon)
+
+diversitysimpson <- diversity(bugslist_filtered, index = "simpson")
+show(diversitysimpson)
+
+write.csv(diversitysimpson)

@@ -1,0 +1,45 @@
+### Microbiomics on baseline to 1 year gut microbiota###
+install.packages("devtools")
+install.packages("stringi")
+install_github("tvatanen/microbiomics")
+install.packages("vegan")
+
+library("devtools")
+library("stringi")
+library("microbiomics")
+library("vegan")
+
+getwd()
+setwd("C:/Users/Naomi Davies/Documents/PhD R/Gut micro Aug2018")
+
+##read the file and make it a dataframe called 'bugslist'
+bugslist_filtered <- read_metaphlan_table(file = 'bugslist_filtered.txt', kingdom = "k__Bacteria", lvl = 7, normalize = TRUE)
+
+
+##read metadata .txt file and make it a data fram called 'metadata'
+metadata_NR <- read.table(file = 'metadata_NR.txt', header = TRUE, sep = '\t')
+
+## check that row names match in order for both files
+## asking if "all" the 'rownames' from bugslist (because read_metaphlan_table transposes the sample ID to rows) match the 'sampleID' names in the 'metadata' data frame
+all(rownames(bugslist_filtered) == metadata_NR$sampleID)
+
+
+?adonis
+
+##Run adonis on a single variables eg Batch
+
+adonis(bugslist_filtered ~ BMI, data = metadata_NR, permutations = 999)
+adonis(bugslist_filtered ~ HbA1c, data = metadata_filtered, permutations = 999)
+adonis(bugslist_filtered ~ R.NR, data = metadata_NR, permutations = 999)
+adonis(bugslist_filtered ~ Surgery, data = metadata_NR, permutations = 999)
+adonis(bugslist_filtered~ Time, data = metadata_NR, permutations = 999)
+adonis(bugslist_filtered ~ Sex, data = metadata_NR, permutations = 999)
+adonis(bugslist_filtered ~ BMI, data = metadata_NR, permutations = 999)
+adonis(bugslist_filtered ~ Batch, data = metadata_NR, permutations = 999)
+
+
+## run adonis in order of significance from single runs
+adonis(bugslist_filtered ~ Time + R.NR + Sex + BMI + Surgery + Batch, data = metadata_NR, permutations = 999)
+
+
+

@@ -1,0 +1,23 @@
+lefse example using pre-surgery or 1 year after surgery by remission status (r vs nr)
+
+
+small_baseline.txt - has all baseline gut data with remission status (R vs NR).
+small_1yr.txt - contains all 1 year gut data with remission status (R vs NR)
+
+Format and run lefse based on surgery type at 1 year.
+
+/mnt/3dgenome/projects/Naomi/cat_fastq/format_input.py small_baseline.txt small_baseline_surgery.in -c 2 -s 1 -u 4 -o 1000000
+/mnt/3dgenome/projects/Naomi/cat_fastq/run_lefse.py small_baseline_surgery.in small_baseline_surgery.res -l 4
+/mnt/3dgenome/projects/Naomi/cat_fastq/plot_res.py small_baseline_surgery.res small_baseline_surgery.png
+
+2. Format and run lefse based on remission status at baseline. 
+
+/mnt/3dgenome/projects/Naomi/cat_fastq/format_input.py small_baseline.txt small_baseline.in -c 1 -s 2 -u 4 -o 1000000
+/mnt/3dgenome/projects/Naomi/cat_fastq/run_lefse.py small_baseline.in small_baseline.res -l 2.5
+/mnt/3dgenome/projects/Naomi/cat_fastq/plot_res.py small_baseline.res small_baseline25.png
+
+3. Format and run lefse based on remission status at 1 year. 
+
+/mnt/3dgenome/projects/Naomi/cat_fastq/format_input.py small_1yr.txt small_1yr.in -c 1 -s 2 -u 4 -o 1000000
+/mnt/3dgenome/projects/Naomi/cat_fastq/run_lefse.py small_1yr.in small_1yr.res -l 2.5
+/mnt/3dgenome/projects/Naomi/cat_fastq/plot_res.py small_1yr.res small_1yr25.png

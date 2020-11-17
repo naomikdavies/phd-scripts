@@ -1,0 +1,124 @@
+library(vegan)
+library(tidyverse)
+library(RColorBrewer)
+library(microbiomics)
+setwd("C:/Users/Naomi Davies/Documents/PhD R/Gut micro Aug2018")
+
+# replaced ";" with <TAB> character in buglist.csv to get tab-separated file (native MetaPhlAn output type)
+metaphlan_species <- read_metaphlan_table("bugslist_filtered.txt")
+
+metadata <- read_delim("metadata_RNR.csv", delim = ";")
+
+mds_res <- metaMDS(metaphlan_species)
+
+data.frame(mds_res$points) %>%
+  rownames_to_column("Sample") %>%
+  mutate(Sample = str_remove(Sample, "p")) %>%
+  left_join(metadata) %>%
+  ggplot(aes(x=MDS1, y=MDS2, fill = Surgery)) +
+  geom_point(shape = 21, size = 3) + 
+  theme_bw() + 
+  scale_x_continuous(breaks = c()) +
+  scale_y_continuous(breaks = c()) +
+  coord_equal()
+ggsave("PCoa_surgery.png", w=7,h=5)
+# *or*
+ggsave("PCoa_surgery.pdf", w=7,h=5)
+
+data.frame(mds_res$points) %>%
+  rownames_to_column("Sample") %>%
+  mutate(Sample = str_remove(Sample, "p")) %>%
+  left_join(metadata) %>%
+  ggplot(aes(x=MDS1, y=MDS2, fill = Time)) +
+  geom_point(shape = 21, size = 3) + 
+  theme_bw() + 
+  scale_x_continuous(breaks = c()) +
+  scale_y_continuous(breaks = c()) +
+  coord_equal()
+
+data.frame(mds_res$points) %>%
+  rownames_to_column("Sample") %>%
+  mutate(Sample = str_remove(Sample, "p")) %>%
+  left_join(metadata) %>%
+  ggplot(aes(x=MDS1, y=MDS2, fill = Remit)) +
+  geom_point(shape = 21, size = 3) + 
+  theme_bw() + 
+  scale_x_continuous(breaks = c()) +
+  scale_y_continuous(breaks = c()) +
+  coord_equal() +
+  stat_ellipse(type = "norm", linetype = 2) +
+  aes(color = Remit)
+
+data.frame(mds_res$points) %>%
+  rownames_to_column("Sample") %>%
+  mutate(Sample = str_remove(Sample, "p")) %>%
+  left_join(metadata) %>%
+  ggplot(aes(x=MDS1, y=MDS2, fill = Batch)) +
+  geom_point(shape = 21, size = 3) + 
+  theme_bw() + 
+  scale_x_continuous(breaks = c()) +
+  scale_y_continuous(breaks = c()) +
+  coord_equal() +
+  stat_ellipse(type = "norm", linetype = 2) +
+  aes(color = Batch)
+ # mutate(metadata = factor(Batch, labels = c("1", "2", "3")))
+  
+
+data.frame(mds_res$points) %>%
+  rownames_to_column("Sample") %>%
+  mutate(Sample = str_remove(Sample, "p")) %>%
+  left_join(metadata) %>%
+  ggplot(aes(x=MDS1, y=MDS2, fill = BMI)) +
+  geom_point(shape = 21, size = 3) + 
+  theme_bw() + 
+  scale_x_continuous(breaks = c()) +
+  scale_y_continuous(breaks = c()) +
+  coord_equal()
+
+data.frame(mds_res$points) %>%
+  rownames_to_column("Sample") %>%
+  mutate(Sample = str_remove(Sample, "p")) %>%
+  left_join(metadata) %>%
+  ggplot(aes(x=MDS1, y=MDS2, fill = SurgTime)) +
+  geom_point(shape = 21, size = 3) + 
+  theme_bw() + 
+  scale_x_continuous(breaks = c()) +
+  scale_y_continuous(breaks = c()) +
+  coord_equal() +
+  stat_ellipse(type = "norm", linetype = 2) +
+  aes(color = SurgTime)
+
+ggsave("PCoa_surgerytime4.pdf", w=7,h=5)
+
+data.frame(mds_res$points) %>%
+  rownames_to_column("Sample") %>%
+  mutate(Sample = str_remove(Sample, "p")) %>%
+  left_join(metadata) %>%
+  ggplot(aes(x=MDS1, y=MDS2, fill = RemitTime)) +
+  geom_point(shape = 21, size = 3) + 
+  theme_bw() + 
+  scale_x_continuous(breaks = c()) +
+  scale_y_continuous(breaks = c()) +
+  coord_equal() +
+  stat_ellipse(type = "norm", linetype = 2) +
+  aes(color = RemitTime)
+
+ggsave("PCoa_RemitTime.pdf", w=7,h=5)
+
+data.frame(mds_res$points) %>%
+  rownames_to_column("Sample") %>%
+  mutate(Sample = str_remove(Sample, "p")) %>%
+  left_join(metadata) %>%
+  ggplot(aes(x=MDS1, y=MDS2, fill = FutureRemit)) +
+  geom_point(shape = 21, size = 2) + 
+  theme_bw() + 
+  scale_x_continuous(breaks = c()) +
+  scale_y_continuous(breaks = c()) +
+  coord_equal() +
+  stat_ellipse(type = "norm", linetype = 3) +
+  aes(color = FutureRemit)
+
+
+ggsave("PCoa_FutureRemit.pdf", w=7,h=5)
+
+
